@@ -1,0 +1,21 @@
+{
+  "name": "applemusicpresence",
+  "version": "0.0.1",
+  "description": "Display your Apple Music presence on discord!",
+  "main": "index.js",
+  "scripts": {
+    "start": "electron index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Adam",
+  "license": "ISC",
+  "dependencies": {
+    "applescript": "^1.0.0",
+    "bootstrap": "^4.3.1",
+    "discord-rich-presence": "^0.0.8",
+    "electron": "^5.0.6",
+    "express": "^4.17.1",
+    "jquery": "^3.4.1",
+    "socket.io": "^2.2.0"
+  }
+}
