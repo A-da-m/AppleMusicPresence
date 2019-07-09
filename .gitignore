@@ -9,3 +9,4 @@ builds/
 AppleMusicPresence-darwin-x64
 build/
 dist/
+.DS_Store?
