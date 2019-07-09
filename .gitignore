@@ -3,3 +3,9 @@ node_modules
 package-lock.json
 yarn.lock
 .vscode
+.DS_Store
+electron-builder.yml
+builds/
+AppleMusicPresence-darwin-x64
+build/
+dist/

@@ -1,21 +1,43 @@
 {
-  "name": "applemusicpresence",
-  "version": "0.0.1",
+  "name": "amp",
+  "version": "0.0.4",
   "description": "Display your Apple Music presence on discord!",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
-    "start": "electron index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "electron .",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
   },
-  "author": "Adam",
+  "build": {
+    "appId": "co.atiktech.AMP",
+    "productName": "AMP",
+    "copyright": "Copyright © 2019 ATIK_TECH",
+    "mac": {
+      "darkModeSupport": true
+    }
+  },
+  "author": {
+    "name": "ATIK_TECH",
+    "email": "mail@atiktech.co"
+  },
   "license": "ISC",
   "dependencies": {
+    "@sentry/electron": "^0.17.1",
     "applescript": "^1.0.0",
     "bootstrap": "^4.3.1",
+    "connectivity": "^1.0.2",
     "discord-rich-presence": "^0.0.8",
-    "electron": "^5.0.6",
-    "express": "^4.17.1",
+    "dotenv": "^8.0.0",
+    "electron-updater": "^4.0.14",
     "jquery": "^3.4.1",
-    "socket.io": "^2.2.0"
+    "popper.js": "^1.15.0",
+    "register-scheme": "^0.0.2"
+  },
+  "repository": {
+    "url": "https://github.com/A-da-m/AMP-download"
+  },
+  "devDependencies": {
+    "electron": "5.0.5",
+    "electron-builder": "^20.44.4"
   }
 }
