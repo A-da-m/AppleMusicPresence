@@ -1,6 +1,12 @@
-# Apple Music Presence
+![](https://file.coffee/DkcL4yPB5.png)
+
+<h1 align="center"><strong>Apple Music Presence</strong></h1>
+
+
 
 Simply listen to Apple Music in Discord
+
+![GitHub All Releases](https://img.shields.io/github/downloads/A-da-m/AppleMusicPresence/total?color=%23497FFF&label=DOWNLOADS&style=for-the-badge)
 
 ## Setup
 

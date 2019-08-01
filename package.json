@@ -34,7 +34,7 @@
     "register-scheme": "^0.0.2"
   },
   "repository": {
-    "url": "https://github.com/A-da-m/AMP-download"
+    "url": "https://github.com/A-da-m/AppleMusicPresence"
   },
   "devDependencies": {
     "electron": "5.0.5",
