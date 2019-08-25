@@ -7,7 +7,10 @@ const connectivity = require('connectivity')
 const Sentry = require('@sentry/electron')
 const path = require('path')
 const iTunesHelper = require('./helper/iTunesHelper')
+const AppleMusicHelper = require('./helper/AppleMusicHelper')
 const iTunes = new iTunesHelper() // eslint-disable-line
+const AppleMusic = new AppleMusicHelper()
+const os = require('os')
 
 // Setup sentry for that sweet sweet error handlng
 Sentry.init({ dsn: process.env.SENTRY_DSN })
@@ -129,8 +132,11 @@ const createWindow = () => {
     setTheme()
   })
 }
+
 const update = async () => {
-  let result = await iTunes.getTrackInfo()
+  let result = null
+  if (os.release() === '19.0.0') result = await AppleMusic.getTrackInfo()
+  else result = await iTunes.getTrackInfo()
   if (!result) result = { artist: 'Browsing...', title: 'Browsing...', position: null, duration: null, state: null }
   const { artist, title, position, duration, state } = result
   const startTimestamp = () => {
