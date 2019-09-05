@@ -10,7 +10,7 @@
 </head>
 <body>
     <div class="container mt-5 mb-5">
-        <h1 class="changeColor"><i class="fab fa-apple"></i> Music</h1>
+        <h1 class="changeColor">Settings</h1>
         <div class="card w-100 invisible">
             <div class="card-body">
 
@@ -23,35 +23,11 @@
     <script type="text/javascript" src="../../node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
     <script type="text/javascript">
 $(document).ready(function () {
-  let dark = false
   const { ipcRenderer } = require('electron')
-
   ipcRenderer.on('ready', (event, message) => {
     console.log(message)
   })
-
-  ipcRenderer.on('update', (event, message) => {
-    if (message.title === 'Browsing...') {
-      $('.card-body').remove()
-      $('.card').removeClass('invisible')
-      $('.card').append('<div class="card-body"></div>')
-      if (dark) $('.card-body').append(`<h5 id="song-title" class="card-title text-light mb-0 pb-0">${message.title}</h5>`)
-      else $('.card-body').append(`<h5 id="song-title" class="card-title text-dark mb-0 pb-0">${message.title}</h5>`)
-    } else {
-      $('.card-body').remove()
-      $('.card').removeClass('invisible')
-      $('.card').append('<div class="card-body"></div>')
-      if (dark) $('.card-body').append(`<h5 id="song-title" class="card-title text-light">${message.title}</h5>`)
-      else $('.card-body').append(`<h5 id="song-title" class="card-title text-dark">${message.title}</h5>`)
-      $('.card-body').append(`<h5 id="song-artist" class="card-subtitle mb-2 text-muted">${message.artist}</h5>`)
-      $('.card-body').append(`<div class="progress">
-            <div class="progress-bar" style="width: ${message.position / 2}%" role="progressbar" aria-valuenow="${message.position / 2}" aria-valuemin="0" aria-valuemax="${message.duration}"></div>
-        </div>`)
-    }
-  })
-
   ipcRenderer.on('dark', (event, message) => {
-    dark = message
     if (message === true) {
       $('body').addClass('bg-dark').removeClass('bg-light')
       $('.card').addClass('bg-dark').removeClass('bg-light')

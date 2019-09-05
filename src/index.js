@@ -18,8 +18,10 @@ Sentry.init({ dsn: process.env.SENTRY_DSN })
 // lets
 let client
 let mainWindow
+let settingsWindow
 let tray
-let shown = false
+let mainWindowShown = false
+let settingsWindowShown = false
 let quit = false
 
 // Functions
@@ -46,6 +48,7 @@ const ready = () => {
 
       client = require('discord-rich-presence')('594174908263694403')
       createWindow()
+      createSettingsWindow()
       createTray()
 
       console.log('RPC ready. Updating now, and every 3 seconds.')
@@ -62,43 +65,39 @@ const ready = () => {
     }
   })
 }
+
 const createTray = () => {
   const image = path.join(__dirname, './images/Tray.png')
   tray = new Tray(image)
   configTray(tray)
 }
+
 const configTray = (tray) => {
   let contextMenu
-  if (!shown) {
-    contextMenu = Menu.buildFromTemplate([
-      { label: 'Show Player',
-        accelerator: 'Command+P',
-        click: () => {
-          shown = true
-          configTray(tray)
-          mainWindow.show()
-        }
-      },
-      { type: 'separator' },
-      { label: 'Quit', accelerator: 'Command+Q', role: 'quit' }
-    ])
-  } else {
-    contextMenu = Menu.buildFromTemplate([
-      { label: 'Hide Player',
-        accelerator: 'Command+P',
-        click: () => {
-          shown = false
-          configTray(tray)
-          mainWindow.hide()
-        }
-      },
-      { type: 'separator' },
-      { label: 'Quit', accelerator: 'Command+Q', role: 'quit' }
-    ])
-  }
+  contextMenu = Menu.buildFromTemplate([
+    { label: mainWindowShown ? 'Show Player' : 'Hide Player',
+      accelerator: 'Command+P',
+      click: () => {
+        mainWindowShown ? mainWindowShown = true : mainWindowShown = false
+        configTray(tray)
+        mainWindowShown ? mainWindow.show() : mainWindow.hide()
+      }
+    },
+    { type: 'separator' },
+    { label: 'Settings',
+      click: () => {
+        settingsWindowShown ? settingsWindowShown = true : settingsWindowShown = false
+        configTray(tray)
+        settingsWindow.show()
+      }
+    },
+    { type: 'separator' },
+    { label: 'Quit', accelerator: 'Command+Q', role: 'quit' }
+  ])
   tray.setToolTip('Apple Music Presence')
   tray.setContextMenu(contextMenu)
 }
+
 const createWindow = () => {
   mainWindow = new BrowserWindow({
     width: 600,
@@ -129,6 +128,38 @@ const createWindow = () => {
 
   mainWindow.webContents.on('did-finish-load', async () => {
     mainWindow.webContents.send('ready', 'Client is ready.')
+    setTheme()
+  })
+}
+const createSettingsWindow = () => {
+  settingsWindow = new BrowserWindow({
+    width: 600,
+    height: 280,
+    resizable: true,
+    show: false,
+    titleBarStyle: 'hidden',
+    title: 'Apple Music Presence',
+    webPreferences: {
+      nodeIntegration: true
+    },
+    icon: `${__dirname}/images/icon.icns`,
+    darkTheme: true
+  })
+
+  settingsWindow.setTitle('Apple Music Presence')
+
+  settingsWindow.loadURL(`file://${__dirname}/views/settings.html`)
+
+  settingsWindow.on('closed', (e) => {
+    if (!quit) {
+      e.preventDefault()
+      configTray(tray)
+      mainWindow.hide()
+    }
+  })
+
+  settingsWindow.webContents.on('did-finish-load', async () => {
+    settingsWindow.webContents.send('ready', 'Client is ready.')
     setTheme()
   })
 }
@@ -199,14 +230,19 @@ app.on('quit', (e) => {
   quit = true
   e.preventDefault()
   mainWindow.hide()
+  settingsWindow.hide()
   app.quit()
 })
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit()
-  else createWindow()
+  else {
+    createWindow()
+    createSettingsWindow()
+  }
 })
 app.on('activate', () => {
   if (mainWindow === null) createWindow()
+  if (settingsWindow === null) createSettingsWindow()
 })
 
 // Rejection handling
