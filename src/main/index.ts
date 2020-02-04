@@ -1,5 +1,5 @@
 // Imports
-import { app, BrowserWindow, Tray, Menu, systemPreferences, dialog, ipcMain } from 'electron'
+import { app, BrowserWindow, Tray, Menu, systemPreferences, dialog } from 'electron'
 import { autoUpdater } from 'electron-updater'
 
 import * as Sentry from '@sentry/electron'
@@ -9,7 +9,8 @@ import MusicHelper from '../helper/MusicHelper'
 import url from 'url'
 import os from 'os'
 import isOnline from 'is-online'
-import RPC from 'discord-rpc'
+
+const RPC = require('discord-rpc')
 
 RPC.register('594174908263694403')
 const rpc = new RPC.Client({ transport: 'ipc' })
@@ -141,7 +142,7 @@ const update = async (): Promise<void> => {
     if (!result) {
       rpc.clearActivity()
     }
-    const { artist, title, position, duration, state }: any = result
+    const { artist, title, position, state }: any = result
     const startTimestamp = position ? new Date(Date.now() - position * 1000) : undefined
     console.log(result)
     if (state === 'paused' || !startTimestamp) {

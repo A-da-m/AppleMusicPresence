@@ -1,7 +1,7 @@
 import { promisify } from 'util'
-import applescript from 'applescript'
 import path from 'path'
 
+const applescript = require('applescript')
 const execFile = promisify(applescript.execFile)
 
 class MusicHelper {
@@ -17,7 +17,7 @@ class MusicHelper {
           state: results ? results[4] : undefined
         })
       })
-      .catch(error => {
+      .catch((error: Error) => {
         reject(error)
       })
     })
