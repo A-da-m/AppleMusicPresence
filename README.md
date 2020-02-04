@@ -17,7 +17,7 @@ Simply listen to Apple Music in Discord
 
 ## Downloads
 
- - 0.0.3: [Download](https://atiktech.co/downloads/amp)
+ - 0.0.6: [Download](https://atiktech.co/downloads/amp)
 
 ## Source Code
 

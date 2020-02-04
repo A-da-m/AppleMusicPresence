@@ -1,17 +1,18 @@
 {
   "name": "amp",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Display your Apple Music presence on discord!",
   "main": "src/index.js",
   "scripts": {
-    "start": "electron .",
-    "pack": "electron-builder --dir",
-    "dist": "electron-builder"
+    "dev": "electron-webpack dev",
+    "compile": "electron-webpack",
+    "dist": "yarn compile && electron-builder",
+    "dist:dir": "yarn dist -- --dir -c.compression=store -c.mac.identity=null"
   },
   "build": {
     "appId": "co.atiktech.AMP",
     "productName": "AMP",
-    "copyright": "Copyright © 2019 ATIK_TECH",
+    "copyright": "Copyright © 2020 ATIK_TECH",
     "mac": {
       "darkModeSupport": true
     }
@@ -22,23 +23,32 @@
   },
   "license": "ISC",
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.10.2",
     "@sentry/electron": "^0.17.1",
     "applescript": "^1.0.0",
     "bootstrap": "^4.3.1",
-    "connectivity": "^1.0.2",
-    "discord-rich-presence": "^0.0.8",
+    "discord-rpc": "^3.1.0",
     "dotenv": "^8.0.0",
+    "electron-settings": "^3.2.0",
     "electron-updater": "^4.0.14",
+    "eris": "^0.11.2",
+    "is-online": "^8.2.1",
     "jquery": "^3.4.1",
     "popper.js": "^1.15.0",
-    "register-scheme": "^0.0.2"
+    "quartz": "https://github.com/pointscity/quartz.git#2.0.0-dev"
   },
   "repository": {
     "url": "https://github.com/A-da-m/AppleMusicPresence"
   },
   "devDependencies": {
     "electron": "^6.0.4",
-    "electron-builder": "^21.2.0"
+    "electron-builder": "^21.2.0",
+    "electron-webpack": "^2.7.4",
+    "electron-webpack-ts": "^3.2.0",
+    "tslint": "^5.20.1",
+    "tslint-config-standard": "^9.0.0",
+    "typescript": "^3.6.2",
+    "webpack": "^4.39.3"
   },
   "standard": {
     "globals": [

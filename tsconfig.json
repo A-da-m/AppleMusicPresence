@@ -1,0 +1,10 @@
+{
+  "extends": "./node_modules/electron-webpack/tsconfig-base.json",
+  "noImplicitAny": false,
+  "compilerOptions": {
+    "skipLibCheck": true
+  },
+  "include": [
+    "./node_modules/quartz/**/*.d.ts"
+  ]
+}
