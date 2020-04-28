@@ -1,16 +1,17 @@
 // Imports
-import { app, BrowserWindow, Tray, Menu, systemPreferences, dialog } from 'electron'
-import { autoUpdater } from 'electron-updater'
+import fixPath from 'fix-path'
+fixPath()
+import { app, BrowserWindow, Tray, Menu, systemPreferences, dialog, remote } from 'electron'
 
 import * as Sentry from '@sentry/electron'
 import path from 'path'
-import iTunesHelper from '../helper/iTunesHelper'
-import MusicHelper from '../helper/MusicHelper'
+import iTunesHelper from './helper/iTunesHelper'
+import MusicHelper from './helper/MusicHelper'
 import url from 'url'
 import os from 'os'
 import isOnline from 'is-online'
-
-const RPC = require('discord-rpc')
+// @ts-ignore
+import RPC from 'discord-rpc'
 
 RPC.register('594174908263694403')
 const rpc = new RPC.Client({ transport: 'ipc' })
@@ -18,12 +19,8 @@ const rpc = new RPC.Client({ transport: 'ipc' })
 const Music = new MusicHelper()
 const iTunes = new iTunesHelper()
 
-require('dotenv').config()
-
 // Setup sentry for that sweet sweet error handlng
-Sentry.init({ dsn: process.env.SENTRY_DSN })
-
-const srcDir = path.resolve(`${process.cwd()}${path.sep}src`)
+Sentry.init({ dsn: 'https://b253804ef8344b1abf767b7702f13da2@sentry.io/1499784' })
 
 // lets
 // let client: any
@@ -33,47 +30,53 @@ let quit: boolean = false
 
 // Functions
 const ready = async (): Promise<void> => {
-  if (process.platform === 'darwin') {
-    if (!app.isInApplicationsFolder) {
-      dialog.showMessageBox({
-        title: 'App must be in applications folder',
-        buttons: ['Ok'],
-        message: 'Move the application to the applications folder to run the app.'
-      })
+  try {
+    if (process.platform === 'darwin') {
+      if (!app.isInApplicationsFolder) {
+        dialog.showMessageBox({
+          title: 'App must be in applications folder',
+          buttons: ['Ok'],
+          message: 'Move the application to the applications folder to run the app.'
+        })
+      }
     }
-  }
-  app.dock.hide()
-  app.setName('Apple Music Presence')
-  app.setAboutPanelOptions({
-    applicationName: 'Apple Music Presence',
-    applicationVersion: app.getVersion()
-  })
-  if (await isOnline()) {
-    autoUpdater.fullChangelog = true
-    autoUpdater.allowPrerelease = true
-    autoUpdater.checkForUpdatesAndNotify()
-    rpc.login({ clientId: '594174908263694403' }).catch(console.error)
-    createWindow()
-    createTray()
-    setInterval(update, 3000)
-  } else {
-    if (systemPreferences.isDarkMode() === true) systemPreferences.setAppLevelAppearance('dark')
+    app.dock.hide()
+    app.setName('Apple Music Presence')
+    app.setAboutPanelOptions({
+      applicationName: 'Apple Music Presence',
+      applicationVersion: app.getVersion()
+    })
     const icon: any = url.format({
-      pathname: path.join(srcDir, 'images', 'AMP.png'),
+      pathname: path.join(__dirname, '..', 'images', 'AMP.png'),
       slashes: true
     })
+    if (await isOnline()) {
+      await rpc.login({ clientId: '594174908263694403' })
+        .catch((error: Error) => console.error(error))
+      createWindow()
+      createTray()
+      setInterval(update, 3000)
+    } else {
+      if (systemPreferences.isDarkMode() === true) systemPreferences.setAppLevelAppearance('dark')
+      dialog.showMessageBox({
+        title: 'Connection',
+        message: 'No interent connection found...',
+        type: 'error',
+        icon: icon
+      })
+    }
+  } catch (error) {
     dialog.showMessageBox({
-      title: 'Connection',
-      message: 'No interent connection found...',
-      type: 'error',
-      icon: icon
+      title: 'Error',
+      message: error.message,
+      type: 'error'
     })
   }
 }
 
 const createTray = (): void => {
   const image = url.format({
-    pathname: path.join(srcDir, 'images', 'Tray.png'),
+    pathname: path.join(__dirname, '..', 'images', 'Tray.png'),
     slashes: true
   })
   tray = new Tray(image)
@@ -82,6 +85,24 @@ const createTray = (): void => {
 
 const configTray = (tray: any): void => {
   const contextMenu = Menu.buildFromTemplate([
+    { label: 'Reconnect to Discord', accelerator: 'Command+R', click: async () => {
+      rpc.destroy()
+      await rpc.login({ clientId: '594174908263694403' }).catch(console.error)
+      update()
+    } },
+    {
+      label: 'Developer Tools', accelerator: 'Command+D', click: () => {
+        mainWindow.show()
+        mainWindow.webContents.openDevTools()
+        mainWindow.reload()
+      },
+    },
+    {
+      label: 'Reload', click: () => {
+        mainWindow.reload()
+      },
+    },
+    { type: 'separator' },
     { label: 'Quit', accelerator: 'Command+Q', role: 'quit' }
   ])
   tray.setToolTip('Apple Music Presence')
@@ -106,12 +127,13 @@ const createWindow = (): BrowserWindow => {
       webviewTag: true
     },
     icon: url.format({
-      pathname: path.join(srcDir, 'images', 'icon.icns'),
+      pathname: path.join(__dirname, '..', 'images', 'icon.icns'),
       slashes: true
     }),
     darkTheme: true
   })
 
+  mainWindow.loadURL('https://atiktech/amp')
   app.commandLine.appendSwitch('enable-features', 'OverlayScrollbar')
   app.commandLine.appendSwitch('--enable-transparent-visuals')
   app.commandLine.appendSwitch('auto-detect', 'false')
@@ -139,22 +161,19 @@ const update = async (): Promise<void> => {
     let result = null
     if (+os.release().split('.')[0] >= 19) result = await Music.getTrackInfo()
     else result = await iTunes.getTrackInfo()
-    if (!result) {
-      rpc.clearActivity()
-    }
+    if (!result) return rpc.clearActivity()
     const { artist, title, position, state }: any = result
+    if (!artist || !title || !state || !position) return rpc.clearActivity()
     const startTimestamp = position ? new Date(Date.now() - position * 1000) : undefined
-    console.log(result)
     if (state === 'paused' || !startTimestamp) {
-      rpc.setActivity({
+      return rpc.setActivity({
         state: artist,
         details: `Paused: ${title}`,
         largeImageKey: 'am',
         smallImageKey: 'pause'
       })
-      return
     } else if (startTimestamp) {
-      rpc.setActivity({
+      return rpc.setActivity({
         state: artist,
         details: title,
         startTimestamp: startTimestamp,
@@ -163,6 +182,11 @@ const update = async (): Promise<void> => {
       })
     }
   } catch (e) {
+    dialog.showMessageBox({
+      title: 'Error',
+      message: e.message,
+      type: 'error'
+    })
   }
 }
 // DARK MODE ALL THE THINGS

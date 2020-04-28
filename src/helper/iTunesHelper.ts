@@ -1,13 +1,23 @@
 import { promisify } from 'util'
-import path from 'path'
+import applescript from 'applescript'
 
-const applescript = require('applescript')
-const execFile = promisify(applescript.execFile)
+const exec = promisify(applescript.execString)
 
 class iTunesHelper {
   getTrackInfo () {
     return new Promise((resolve, reject) => {
-     return execFile(path.resolve('./scripts/itunes.applescript'), [])
+     return exec(`
+        set appName to "iTunes"
+        if application appName is running then
+          tell application "iTunes" to get {
+            artist of current track,
+            name of current track,
+            player position,
+            duration of current track,
+            player state
+          }
+        end if
+     `)
       .then((results: string|number[]) => {
         return resolve({
           artist: results ? results[0] : undefined,

@@ -1,10 +1,21 @@
 {
-  "extends": "./node_modules/electron-webpack/tsconfig-base.json",
-  "noImplicitAny": false,
-  "compilerOptions": {
-    "skipLibCheck": true
+  "compileOnSave": true,
+	"compilerOptions": {
+    "jsx": "preserve",
+		"target": "esnext",
+    "lib": ["esnext", "DOM"],
+    "moduleResolution": "node",
+    "module": "CommonJS",
+    "noImplicitAny": true,
+    "esModuleInterop": true,
+    "sourceMap": true,
+    "outDir": "./dist",
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true,
+    "pretty": true
   },
   "include": [
-    "./node_modules/quartz/**/*.d.ts"
+    "./src/**/*", "public", "module.d.ts"
   ]
 }
