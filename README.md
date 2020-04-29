@@ -21,4 +21,4 @@ Simply listen to Apple Music in Discord
 
 ## Source Code
 
-The source code here is provided for users to contribute or learn how to develop there own electron app. Distributing your own version is not encouraged and will not receive any help.
+The source code here is provided for users to contribute or learn how to develop their own electron app. Distributing your own version is not encouraged and will not receive any help.
