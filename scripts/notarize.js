@@ -1,6 +1,5 @@
 require('dotenv').config()
-const fixPath = require('fix-path')
-fixPath()
+
 const { notarize } = require('electron-notarize')
 const fs = require('fs')
 const elapsed = (start) => {

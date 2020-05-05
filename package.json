@@ -1,10 +1,10 @@
 {
   "name": "amp",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Display your Apple Music presence on discord!",
   "main": "dist/index.js",
   "scripts": {
-    "dev": "tsc && electron .",
+    "dev": "tsc && electron . -d",
     "compile": "tsc",
     "dist": "yarn compile && electron-builder",
     "dist:dir": "yarn dist -- --dir -c.compression=store -c.mac.identity=null"
@@ -37,46 +37,26 @@
   },
   "license": "ISC",
   "dependencies": {
-    "@fortawesome/fontawesome-free": "^5.10.2",
     "@sentry/electron": "^0.17.1",
     "applescript": "^1.0.0",
-    "bootstrap": "^4.3.1",
-    "css-loader": "^3.4.2",
     "discord-rpc": "^3.1.0",
     "dotenv": "^8.0.0",
+    "electron-log": "^4.1.2",
     "electron-settings": "^3.2.0",
     "electron-updater": "^4.0.14",
-    "eris": "^0.11.2",
-    "file-loader": "^6.0.0",
-    "fix-path": "^3.0.0",
-    "fork-ts-checker-webpack-plugin": "^4.1.2",
     "is-online": "^8.2.1",
-    "jquery": "^3.4.1",
-    "popper.js": "^1.15.0",
-    "quartz": "https://github.com/pointscity/quartz.git#2.0.0-dev",
-    "source-map-support": "^0.5.16",
-    "terser-webpack-plugin": "^2.3.5",
-    "ts-loader": "^6.2.2"
+    "source-map-support": "^0.5.16"
   },
   "repository": {
     "url": "https://github.com/A-da-m/AppleMusicPresence"
   },
   "devDependencies": {
+    "@types/discord-rpc": "^3.0.3",
     "electron": "^6.0.4",
     "electron-builder": "^21.2.0",
     "electron-notarize": "^0.3.0",
     "tslint": "^5.20.1",
     "tslint-config-standard": "^9.0.0",
-    "typescript": "^3.6.2",
-    "webpack": "^4.39.3",
-    "webpack-cli": "^3.3.11"
-  },
-  "standard": {
-    "globals": [
-      "$"
-    ]
-  },
-  "electronWebpack": {
-    "renderer": null
+    "typescript": "^3.6.2"
   }
 }
