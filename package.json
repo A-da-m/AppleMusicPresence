@@ -52,7 +52,7 @@
   },
   "devDependencies": {
     "@types/discord-rpc": "^3.0.3",
-    "electron": "^6.0.4",
+    "electron": "^9.1.0",
     "electron-builder": "^21.2.0",
     "electron-notarize": "^0.3.0",
     "tslint": "^5.20.1",
