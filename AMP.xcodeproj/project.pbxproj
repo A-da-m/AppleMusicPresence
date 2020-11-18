@@ -15,6 +15,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		660799B02564CD36005FC244 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		660799B12564CE30005FC244 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		6695137B2516B047002ECA43 /* AMP.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AMP.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6695137E2516B047002ECA43 /* AMPApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AMPApp.swift; sourceTree = "<group>"; };
 		669513802516B047002ECA43 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -39,6 +41,8 @@
 		669513722516B047002ECA43 = {
 			isa = PBXGroup;
 			children = (
+				660799B12564CE30005FC244 /* LICENSE */,
+				660799B02564CD36005FC244 /* README.md */,
 				6695137D2516B047002ECA43 /* AMP */,
 				6695137C2516B047002ECA43 /* Products */,
 			);
@@ -284,7 +288,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"AMP/Preview Content\"";
 				DEVELOPMENT_TEAM = N9QVBSL8EU;
-				ENABLE_HARDENED_RUNTIME = NO;
+				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = AMP/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -313,7 +317,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"AMP/Preview Content\"";
 				DEVELOPMENT_TEAM = N9QVBSL8EU;
-				ENABLE_HARDENED_RUNTIME = NO;
+				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = AMP/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
